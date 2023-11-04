@@ -1,0 +1,37 @@
+# Site settings
+title: Stock Indicators for Developers
+tagline: Tools for software trading systems
+lang: en-US
+
+baseurl: "" # the subpath of your site, e.g. /blog
+url: "https://stockindicators.dev" # the base hostname & protocol for your site, e.g. http://example.com
+
+# SEO configuration
+# see https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
+image:
+  path: /assets/icons/android-chrome-256x256.png
+  height: 512
+  width: 512
+
+organization:
+  name: FacioQuo
+  email: info@facioquo.com
+
+# Build settings
+plugins:
+  - jekyll-minifier
+  - jekyll-seo-tag
+  - jekyll-sitemap
+  - jekyll-last-modified-at
+
+# Theme settings
+minima:
+  social_links:
+    - { platform: github,  user_url: "https://github.com/facioquo" }
+
+defaults:
+  - scope:
+      path: "" # an empty string here means all files in the project
+    values:
+      layout: "base"
+      footer: true
