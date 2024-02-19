@@ -16,7 +16,7 @@ jobs:
       BUNDLE_RETRY: 3
 
     environment:
-      name: website
+      name: stockindicators.dev
 
     steps:
 
