@@ -4,14 +4,15 @@ tagline: Tools for software trading systems
 lang: en-US
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "https://stockindicators.dev" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://stockindicators.dev" # hostname & protocol
 
-# SEO configuration
-# see https://github.com/jekyll/jekyll-seo-tag/blob/master/docs/usage.md
+# social media information
 image:
-  path: /assets/icons/android-chrome-256x256.png
-  height: 512
-  width: 512
+  path: /assets/social-banner.png
+  height: 640
+  width: 1280
+
+logo: /assets/icons/android-chrome-512x512.png
 
 organization:
   name: FacioQuo
