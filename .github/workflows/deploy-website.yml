@@ -10,19 +10,25 @@ jobs:
     name: Cloudflare Pages
     runs-on: ubuntu-latest
 
+    env:
+      BUNDLE_PATH: "vendor/bundle"
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+
     environment:
       name: stockindicators.dev
       url: https://stockindicators.dev
 
     steps:
-      - name: Checkout source
+
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
-          working-directory: docs
           ruby-version: 3.3
+          bundler-cache: true
 
       - name: Define tag
         id: tag
