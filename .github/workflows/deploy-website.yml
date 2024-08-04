@@ -17,6 +17,7 @@ jobs:
 
     environment:
       name: stockindicators.dev
+      url: https://stockindicators.dev
 
     steps:
 

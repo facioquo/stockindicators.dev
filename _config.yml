@@ -25,6 +25,9 @@ plugins:
   - jekyll-sitemap
   - jekyll-last-modified-at
 
+include:
+  - _headers
+
 # Theme settings
 minima:
   social_links:
