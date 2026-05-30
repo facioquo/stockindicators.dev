@@ -21,6 +21,9 @@ jobs:
       - name: Checkout source
         uses: actions/checkout@v6
 
+      - name: Lint markdown
+        uses: DavidAnson/markdownlint-cli2-action@v23
+
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
