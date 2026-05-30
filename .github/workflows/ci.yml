@@ -1,4 +1,4 @@
-name: Website a11y
+name: CI
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  test:
+  lint-and-test:
     runs-on: ubuntu-latest
     env:
       BUNDLE_PATH: "vendor/bundle"
@@ -19,7 +19,10 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
+
+      - name: Lint markdown
+        uses: DavidAnson/markdownlint-cli2-action@v23
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
