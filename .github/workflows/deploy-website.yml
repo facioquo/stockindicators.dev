@@ -16,7 +16,7 @@ jobs:
       BUNDLE_RETRY: 3
 
     environment:
-      name: stockindicators.dev
+      name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
       url: ${{ steps.deploy.outputs.deployment-alias-url }}
 
     steps:
