@@ -62,4 +62,4 @@ jobs:
           wranglerVersion: "latest"
           command: >
             pages deploy _site
-            --project-name=${{ vars.CLOUDFLARE_PROJECT_NAME }}
+            --project-name=stock-indicators
