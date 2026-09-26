@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  lint-and-test:
+  gate:
     runs-on: ubuntu-latest
     env:
       BUNDLE_PATH: "vendor/bundle"
