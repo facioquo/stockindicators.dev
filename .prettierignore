@@ -1,0 +1,24 @@
+# Ignore Markdown files (handled by markdownlint)
+*.md
+
+# Ignore lockfiles
+pnpm-lock.yaml
+package-lock.json
+
+# Ignore build output and dependencies
+dist/
+node_modules/
+.astro/
+
+# Ignore VS Code settings
+.vscode/
+
+# Ignore OS and editor files
+.DS_Store
+.pnpm-debug.log
+
+# Caches
+.eslintcache
+
+# Local agent settings
+.claude/

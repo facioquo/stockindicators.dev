@@ -1,0 +1,118 @@
+{
+  "version": "2.0.0",
+  "presentation": {
+    "clear": true,
+    "panel": "dedicated",
+    "showReuseMessage": false
+  },
+  "options": {
+    "cwd": "${workspaceFolder}"
+  },
+  "problemMatcher": [],
+  "tasks": [
+    // ===================================
+    // Install and update dependencies
+    // ===================================
+    {
+      "label": "Install: Node packages",
+      "detail": "Install dependencies (npm packages)",
+      "type": "shell",
+      "command": "pnpm install --config.confirmModulesPurge=false"
+    },
+    {
+      "label": "Check: Node packages",
+      "detail": "Check for dependency updates",
+      "type": "shell",
+      "command": "npx npm-check-updates --deep --peer"
+    },
+    {
+      "label": "Update: Node packages",
+      "detail": "Update dependencies to latest versions",
+      "type": "shell",
+      "command": "npx npm-check-updates --deep --peer --upgrade && pnpm install --config.confirmModulesPurge=false",
+      "dependsOn": "Install: Node packages",
+      "dependsOrder": "sequence"
+    },
+    // ===================================
+    // Test, lint, and format
+    // ===================================
+    {
+      "label": "Check: Prettier",
+      "detail": "Check code formatting (Prettier, no write)",
+      "type": "shell",
+      "command": "pnpm run format:check"
+    },
+    {
+      "label": "Fix: Prettier",
+      "detail": "Auto-fix code formatting (Prettier)",
+      "type": "shell",
+      "command": "pnpm run format"
+    },
+    {
+      "label": "Check: ESLint",
+      "detail": "Check code linting (ESLint, no fix)",
+      "type": "shell",
+      "command": "pnpm run lint:eslint"
+    },
+    {
+      "label": "Fix: ESLint",
+      "detail": "Auto-fix code linting (ESLint)",
+      "type": "shell",
+      "command": "pnpm run lint:eslint:fix"
+    },
+    {
+      "label": "Check: Markdownlint",
+      "detail": "Check for markdown file linting issues",
+      "type": "shell",
+      "command": "pnpm run lint:md"
+    },
+    {
+      "label": "Fix: Markdownlint",
+      "detail": "Auto-fix markdown file linting issues (where possible)",
+      "type": "shell",
+      "command": "pnpm run lint:md:fix"
+    },
+    {
+      "label": "Lint: All",
+      "detail": "Check all code and markdown files (Prettier, ESLint, Markdownlint)",
+      "dependsOn": [
+        "Install: Node packages",
+        "Check: Prettier",
+        "Check: ESLint",
+        "Check: Markdownlint"
+      ],
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "Lint: All (fix)",
+      "detail": "Auto-fix all code and markdown files (Prettier, ESLint, Markdownlint)",
+      "dependsOn": [
+        "Install: Node packages",
+        "Fix: Prettier",
+        "Fix: ESLint",
+        "Fix: Markdownlint"
+      ],
+      "dependsOrder": "sequence"
+    },
+    // ===================================
+    // Build and run website
+    // ===================================
+    {
+      "label": "Build: Website",
+      "detail": "Build Astro site to ./dist output",
+      "type": "shell",
+      "command": "pnpm run build",
+      "dependsOn": "Install: Node packages",
+      "dependsOrder": "sequence"
+    },
+    {
+      "label": "Run: Website (dev)",
+      "detail": "Start local Astro dev server",
+      "type": "shell",
+      "command": "pnpm run dev",
+      "isBackground": true,
+      "dependsOn": "Install: Node packages",
+      "dependsOrder": "sequence"
+    }
+  ]
+}

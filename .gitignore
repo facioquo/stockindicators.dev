@@ -1,5 +1,6 @@
-_site
-.sass-cache
-.jekyll-cache
-.jekyll-metadata
-vendor
+.astro/
+.DS_Store
+.eslintcache
+.pnpm-debug.log
+dist/
+node_modules/

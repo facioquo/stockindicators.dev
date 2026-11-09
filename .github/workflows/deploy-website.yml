@@ -1,57 +1,50 @@
 name: Deploy website
 
-on: workflow_dispatch
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
 
 concurrency:
-  group: ${{ github.ref }}
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  deployments: write
+
+env:
+  NODE_VERSION: 24
 
 jobs:
   deploy:
     name: Cloudflare Pages
-    runs-on: ubuntu-latest
-
-    env:
-      BUNDLE_PATH: "vendor/bundle"
-      BUNDLE_JOBS: 4
-      BUNDLE_RETRY: 3
+    runs-on: ubuntu-slim
 
     environment:
       name: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
-      url: ${{ steps.deploy.outputs.deployment-alias-url }}
+      url: ${{ steps.deploy.outputs.pages-deployment-alias-url }}
 
     steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
 
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v3
         with:
-          ruby-version: 3.3
-          bundler-cache: true
+          cache: true
+          save-cache: false
+          runtime: node@${{ env.NODE_VERSION }}
 
-      - name: Define tag
-        id: tag
-        run: echo "version=$(date +'%Y.%m.%d')-${{ github.run_number }}" >> $GITHUB_OUTPUT
+      # Pushes to main deploy without waiting on CI, so gate on lint here too
+      - name: Lint
+        run: pnpm run lint
 
-      - name: Replace cache markers
-        uses: jacobtomlinson/gha-find-replace@v3
-        with:
-          find: "YYYY.MM.DD"
-          replace: "${{ steps.tag.outputs.version }}"
-          regex: false
-
-      - name: Build site (production)
-        if: github.ref == 'refs/heads/main'
+      - name: Build site
         env:
-          JEKYLL_ENV: production
-        run: bundle exec jekyll build
-
-      - name: Build site (preview)
-        if: github.ref != 'refs/heads/main'
-        env:
-          JEKYLL_ENV: preview
-        run: bundle exec jekyll build
+          # Production-only output (indexing) is opt-in for main
+          PUBLIC_SITE_ENV: ${{ github.ref == 'refs/heads/main' && 'production' || 'preview' }}
+        run: pnpm run build
 
       - name: Publish to Cloudflare Pages
         id: deploy
@@ -59,7 +52,11 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "latest"
+          # Lets the action open a GitHub Deployment, so the deploy URL and
+          # its status surface on GitHub instead of only in the job log.
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          # Pinned: this job holds the Cloudflare token
+          wranglerVersion: "4.159.0"
           command: >
-            pages deploy _site
+            pages deploy dist
             --project-name=stock-indicators

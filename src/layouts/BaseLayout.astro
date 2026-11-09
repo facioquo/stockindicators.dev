@@ -1,0 +1,96 @@
+---
+import "../styles/base.scss";
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Set false for pages without a stable URL of their own (e.g. 404) */
+  canonical?: boolean;
+}
+
+const { title = "", description, canonical = true } = Astro.props;
+
+// Indexing is opt-in: production builds of main set PUBLIC_SITE_ENV=production;
+// preview, CI, and local builds omit it and emit noindex
+const isProd = import.meta.env.PUBLIC_SITE_ENV === "production";
+
+const siteTitle = "Stock Indicators for Developers";
+const siteTagline = "Tools for software trading systems";
+const siteUrl = new URL("/", Astro.site).origin; // from `site` in astro.config.mjs
+const socialCard = `${siteUrl}/assets/social-card.png`;
+const canonicalUrl = canonical ? new URL(Astro.url.pathname, siteUrl).href : null;
+
+const documentTitle = title ? `${title} | ${siteTitle}` : siteTitle;
+const metaDescription = description ?? siteTagline;
+
+const schemaOrgJson = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: siteTitle,
+  headline: documentTitle,
+  description: metaDescription,
+  url: siteUrl,
+  publisher: {
+    "@type": "Organization",
+    logo: {
+      "@type": "ImageObject",
+      url: `${siteUrl}/assets/icons/android-chrome-512x512.png`
+    }
+  }
+});
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    {!isProd && <meta name="robots" content="noindex, nofollow" />}
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="msapplication-config" content="/assets/icons/browserconfig.xml" />
+    <meta name="msapplication-TileColor" content="#212121" />
+    <meta name="theme-color" content="#212121" />
+
+    <title>{documentTitle}</title>
+    <meta name="description" content={metaDescription} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={documentTitle} />
+    <meta property="og:description" content={metaDescription} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:type" content="website" />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:image" content={socialCard} />
+    <meta property="og:image:width" content="1280" />
+    <meta property="og:image:height" content="640" />
+    <meta property="og:image:alt" content={siteTitle} />
+    <meta property="og:site_name" content={siteTitle} />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={documentTitle} />
+    <meta name="twitter:description" content={metaDescription} />
+    <meta name="twitter:image" content={socialCard} />
+
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&display=swap"
+    />
+
+    <link rel="manifest" href="/assets/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/assets/icons/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/assets/icons/favicon.ico" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon-32x32.png" />
+    <link rel="mask-icon" href="/assets/icons/safari-pinned-tab.svg" color="#212121" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icons/apple-touch-icon.png" />
+
+    <script type="application/ld+json" set:html={schemaOrgJson} />
+  </head>
+
+  <body>
+    <main aria-label="Content" id="main-content">
+      <slot />
+    </main>
+  </body>
+</html>
