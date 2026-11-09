@@ -48,6 +48,9 @@ jobs:
           npx --yes wait-on@9.5.1 --timeout 60000 http://127.0.0.1:4000/
 
       - name: Test accessibility
+        env:
+          # npx skips Puppeteer's Chrome download; use the runner's Chrome
+          PUPPETEER_EXECUTABLE_PATH: /usr/bin/google-chrome
         run: >
           npx --yes pa11y-ci@5.0.0
           --config ./.pa11yci
