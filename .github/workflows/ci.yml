@@ -1,61 +1,59 @@
 name: CI
 
 on:
-  pull_request:
+  push:
     branches: ["main"]
+  pull_request:
 
-# Prevent multiple concurrent runs
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
+env:
+  NODE_VERSION: 24
+
 jobs:
   gate:
     runs-on: ubuntu-latest
-    env:
-      BUNDLE_PATH: "vendor/bundle"
-      BUNDLE_JOBS: 4
-      BUNDLE_RETRY: 3
+    timeout-minutes: 15
 
     steps:
-      - name: Checkout source
-        uses: actions/checkout@v6
+      - name: Checkout code
+        uses: actions/checkout@v7
 
-      - name: Lint markdown
-        uses: DavidAnson/markdownlint-cli2-action@v23
-
-      - name: Setup Ruby
-        uses: ruby/setup-ruby@v1
+      - name: Setup pnpm and Node.js
+        uses: pnpm/setup@v3
         with:
-          ruby-version: 3.3
+          cache: true
+          runtime: node@${{ env.NODE_VERSION }}
 
-      - name: Install dependencies
-        run: |
-          bundle install
-          npm install -g pa11y-ci
+      - name: Format check (Prettier)
+        run: pnpm run format:check
 
-      - name: Use 'localhost'
-        uses: jacobtomlinson/gha-find-replace@v3
-        with:
-          find: "https://stockindicators.dev"
-          replace: "http://127.0.0.1:4000"
-          regex: false
+      - name: Lint ESLint
+        run: pnpm run lint:eslint
+
+      - name: Lint Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v25
 
       - name: Build site
-        run: bundle exec jekyll build
+        run: pnpm run build
+
+      - name: Install pa11y-ci
+        run: npm install -g pa11y-ci
 
       - name: Serve site
-        run: bundle exec jekyll serve --port 4000 --detach
-
-      - name: Show environment
-        run: npx pa11y --environment
+        run: |
+          pnpm run preview --host 127.0.0.1 --port 4000 &
+          npx wait-on --timeout 60000 http://127.0.0.1:4000/
 
       - name: Test accessibility
         run: >
           pa11y-ci
-          --sitemap http://127.0.0.1:4000/sitemap.xml
           --config ./.pa11yci
-
-      - name: Kill site (failsafe)
-        if: always()
-        run: pkill -f jekyll
+          --sitemap http://127.0.0.1:4000/sitemap-0.xml
+          --sitemap-find https://stockindicators.dev
+          --sitemap-replace http://127.0.0.1:4000

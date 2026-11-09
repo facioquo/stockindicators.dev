@@ -4,13 +4,8 @@
     "timeout": 30000,
     "wait": 1000,
     "standard": "WCAG2AA",
-    "hideElements": "#searchzone",
-    "port": 4000,
     "chromeLaunchConfig": {
-      "args": [
-        "--no-sandbox",
-        "--disable-setuid-sandbox"
-      ]
+      "args": ["--no-sandbox", "--disable-setuid-sandbox"]
     }
   }
 }

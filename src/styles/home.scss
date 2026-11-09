@@ -1,0 +1,26 @@
+.splash-page {
+  height: calc(100vh - 6rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.splash {
+  width: min(400px, calc(100vw - 3rem));
+  text-align: center;
+
+  h1 {
+    font-size: 2.5em;
+    font-weight: 500;
+    line-height: 1;
+
+    @media screen and (max-width: 480px) {
+      font-size: 2em;
+    }
+
+    @media screen and (max-width: 350px) {
+      font-size: 1.5em;
+    }
+  }
+}
