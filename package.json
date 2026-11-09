@@ -17,7 +17,7 @@
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.4.8"
+    "astro": "^7.4.7"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
@@ -30,6 +30,6 @@
     "prettier-plugin-astro": "^1.1.2",
     "sass": "^1.108.1",
     "typescript": "~6.0.3",
-    "typescript-eslint": "^8.72.2"
+    "typescript-eslint": "^8.72.1"
   }
 }
