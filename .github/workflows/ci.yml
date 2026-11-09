@@ -42,17 +42,14 @@ jobs:
       - name: Build site
         run: pnpm run build
 
-      - name: Install pa11y-ci
-        run: npm install -g pa11y-ci
-
       - name: Serve site
         run: |
           pnpm run preview --host 127.0.0.1 --port 4000 &
-          npx wait-on --timeout 60000 http://127.0.0.1:4000/
+          npx --yes wait-on@9.5.1 --timeout 60000 http://127.0.0.1:4000/
 
       - name: Test accessibility
         run: >
-          pa11y-ci
+          npx --yes pa11y-ci@5.0.0
           --config ./.pa11yci
           --sitemap http://127.0.0.1:4000/sitemap-0.xml
           --sitemap-find https://stockindicators.dev

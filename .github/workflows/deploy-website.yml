@@ -36,6 +36,10 @@ jobs:
           save-cache: false
           runtime: node@${{ env.NODE_VERSION }}
 
+      # Pushes to main deploy without waiting on CI, so gate on lint here too
+      - name: Lint
+        run: pnpm run lint
+
       - name: Build site
         env:
           # Production-only output (indexing) is opt-in for main
@@ -51,7 +55,8 @@ jobs:
           # Lets the action open a GitHub Deployment, so the deploy URL and
           # its status surface on GitHub instead of only in the job log.
           gitHubToken: ${{ secrets.GITHUB_TOKEN }}
-          wranglerVersion: "latest"
+          # Pinned: this job holds the Cloudflare token
+          wranglerVersion: "4.159.0"
           command: >
             pages deploy dist
             --project-name=stock-indicators
