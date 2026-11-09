@@ -5,6 +5,3 @@ allowBuilds:
   # Not a project dependency: wrangler-action runs `pnpm add wrangler` during
   # deploy, and wrangler's workerd dependency needs its build script approved
   workerd: true
-
-minimumReleaseAge: 0
-minimumReleaseAgeStrict: false
