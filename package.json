@@ -1,6 +1,16 @@
 {
   "name": "stockindicators.dev",
   "type": "module",
+  "engines": {
+    "node": ">=26"
+  },
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "26",
+      "onFail": "download"
+    }
+  },
   "packageManager": "pnpm@12.18.0",
   "scripts": {
     "dev": "astro dev",
