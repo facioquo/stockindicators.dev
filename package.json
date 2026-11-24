@@ -16,6 +16,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
+    "typecheck": "tsc",
     "lint": "pnpm run format:check && pnpm run lint:eslint && pnpm run lint:md",
     "lint:fix": "pnpm run format && pnpm run lint:eslint:fix && pnpm run lint:md:fix",
     "format": "prettier --write .",
@@ -26,20 +27,21 @@
     "lint:eslint:fix": "eslint \"**/*.{js,ts,astro}\" --fix --cache"
   },
   "dependencies": {
-    "@astrojs/sitemap": "^3.7.4",
-    "astro": "^7.4.7"
+    "@astrojs/sitemap": "^3.7.6",
+    "astro": "^7.4.13"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "eslint": "^10.14.0",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-astro": "^3.2.1",
     "jiti": "^2.7.0",
-    "markdownlint-cli2": "^0.24.0",
-    "prettier": "^3.9.10",
+    "markdownlint-cli2": "^0.24.2",
+    "prettier": "^3.10.1",
     "prettier-plugin-astro": "^1.1.2",
-    "sass": "^1.108.1",
-    "typescript": "~6.0.3",
-    "typescript-eslint": "^8.72.1"
+    "sass": "^1.108.2",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.73.0"
   }
 }

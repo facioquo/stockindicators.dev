@@ -17,6 +17,9 @@ pnpm run build
 # Preview production build
 pnpm run preview
 
+# Type-check TypeScript and JavaScript files with TypeScript 7
+pnpm run typecheck
+
 # Apply Prettier, ESLint, and markdownlint fixes
 pnpm run lint:fix
 ```
