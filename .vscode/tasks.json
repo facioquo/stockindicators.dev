@@ -23,13 +23,13 @@
       "label": "Check: Node packages",
       "detail": "Check for dependency updates",
       "type": "shell",
-      "command": "npx npm-check-updates --deep --peer"
+      "command": "pnpm dlx npm-check-updates --deep --peer"
     },
     {
       "label": "Update: Node packages",
       "detail": "Update dependencies to latest versions",
       "type": "shell",
-      "command": "npx npm-check-updates --deep --peer --upgrade && pnpm install --config.confirmModulesPurge=false",
+      "command": "pnpm dlx npm-check-updates --deep --peer --upgrade && pnpm install --config.confirmModulesPurge=false",
       "dependsOn": "Install: Node packages",
       "dependsOrder": "sequence"
     },
